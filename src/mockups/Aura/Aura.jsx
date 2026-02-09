@@ -91,7 +91,10 @@ const HorizontalSection = ({ section, index, onOpenServices, onBook }) => (
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.45, delay: 0.15 }}
-                        onClick={onOpenServices}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            onOpenServices();
+                        }}
                         className="group flex items-center gap-4 text-white uppercase tracking-widest text-xs hover:text-amber-500 transition-colors"
                     >
                         View Services & Prices
@@ -101,7 +104,10 @@ const HorizontalSection = ({ section, index, onOpenServices, onBook }) => (
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.45, delay: 0.2 }}
-                        onClick={onBook}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            onBook();
+                        }}
                         className="bg-white text-stone-900 px-5 py-2.5 rounded-full uppercase tracking-widest text-xs font-bold hover:bg-amber-500 transition-colors"
                     >
                         Book Appointment
@@ -119,6 +125,8 @@ const Aura = () => {
     const lockRef = useRef(false);
     const lastSlideAtRef = useRef(0);
     const wheelResetTimerRef = useRef(null);
+    const servicesOpenedAtRef = useRef(0);
+    const bookingOpenedAtRef = useRef(0);
     const [activeIndex, setActiveIndex] = useState(0);
     const [showServices, setShowServices] = useState(false);
     const [showBooking, setShowBooking] = useState(false);
@@ -198,6 +206,7 @@ const Aura = () => {
 
     const openBooking = () => {
         setBookingSent(false);
+        bookingOpenedAtRef.current = Date.now();
         setShowBooking(true);
     };
 
@@ -244,7 +253,10 @@ const Aura = () => {
                             key={section.id}
                             section={section}
                             index={index}
-                            onOpenServices={() => setShowServices(true)}
+                            onOpenServices={() => {
+                                servicesOpenedAtRef.current = Date.now();
+                                setShowServices(true);
+                            }}
                             onBook={openBooking}
                         />
                     ))}
@@ -289,8 +301,11 @@ const Aura = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: MOTION.fast }}
-                        className="fixed inset-0 z-[70] bg-black/45 backdrop-blur-[2px]"
-                        onClick={() => setShowServices(false)}
+                        className="fixed inset-0 z-[90] bg-black/45 backdrop-blur-[2px]"
+                        onClick={() => {
+                            if (Date.now() - servicesOpenedAtRef.current < 140) return;
+                            setShowServices(false);
+                        }}
                     >
                         <motion.aside
                             initial={{ x: 380, opacity: 0 }}
@@ -358,8 +373,11 @@ const Aura = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: MOTION.fast }}
-                        className="fixed inset-0 z-[80] bg-black/55 backdrop-blur-[2px] px-4 flex items-center justify-center"
-                        onClick={() => setShowBooking(false)}
+                        className="fixed inset-0 z-[100] bg-black/55 backdrop-blur-[2px] px-4 flex items-center justify-center"
+                        onClick={() => {
+                            if (Date.now() - bookingOpenedAtRef.current < 140) return;
+                            setShowBooking(false);
+                        }}
                     >
                         <motion.div
                             initial={{ opacity: 0, y: 14, scale: 0.99 }}
