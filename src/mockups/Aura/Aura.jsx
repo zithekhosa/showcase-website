@@ -132,6 +132,7 @@ const Aura = () => {
     const [showBooking, setShowBooking] = useState(false);
     const [bookingSent, setBookingSent] = useState(false);
     const [selectedService, setSelectedService] = useState(SERVICES[0].id);
+    const [activeServiceId, setActiveServiceId] = useState(SERVICES[0].id);
 
     const scrollToIndex = useCallback((nextIndex) => {
         const safeIndex = Math.max(0, Math.min(nextIndex, SECTIONS.length - 1));
@@ -309,14 +310,14 @@ const Aura = () => {
                     >
                         <motion.aside
                             initial={{ x: 380, opacity: 0 }}
-                            animate={{ x: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
                             exit={{ x: 380, opacity: 0 }}
                             transition={{ duration: MOTION.base, ease: MOTION.ease }}
                             onClick={(event) => event.stopPropagation()}
-                            className="absolute right-0 top-0 h-full w-full max-w-md bg-stone-950/74 border-l border-white/10 backdrop-blur-2xl p-6 md:p-8 overflow-y-auto shadow-[-30px_0_80px_rgba(0,0,0,0.45)]"
+                            className="absolute right-0 top-0 h-full w-full max-w-md bg-stone-950/78 border-l border-white/10 backdrop-blur-2xl p-6 md:p-8 overflow-y-auto shadow-[-30px_0_80px_rgba(0,0,0,0.45)] relative"
                         >
-                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.08] via-transparent to-transparent" />
-                            <div className="flex items-center justify-between mb-6">
+                            <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-white/[0.08] via-transparent to-transparent" />
+                            <div className="relative z-10 flex items-center justify-between mb-6">
                                 <h3 className="text-3xl font-display text-white leading-none">Services & Prices</h3>
                                 <button
                                     onClick={() => setShowServices(false)}
@@ -327,28 +328,76 @@ const Aura = () => {
                                 </button>
                             </div>
 
-                            <p className="text-stone-300/85 text-sm leading-relaxed mb-6">
+                            <p className="relative z-10 text-stone-300/85 text-sm leading-relaxed mb-6">
                                 Tailored rituals for melanated skin. Calm results, measured care, and premium protocols.
                             </p>
 
-                            <div className="space-y-2.5 relative">
+                            <div className="space-y-2.5 relative z-10">
                                 {SERVICES.map((service, index) => (
-                                    <motion.div
+                                    <motion.button
                                         key={service.id}
+                                        type="button"
+                                        onClick={() => setActiveServiceId(service.id)}
                                         initial={{ opacity: 0, y: 8 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: MOTION.fast, delay: index * 0.035, ease: MOTION.ease }}
                                         whileHover={{ y: -2 }}
-                                        className="rounded-xl border border-white/10 bg-stone-900/55 p-4 transition-colors hover:border-amber-300/40"
+                                        style={
+                                            activeServiceId === service.id
+                                                ? { boxShadow: '0 0 0 1px rgba(251,191,36,0.18), 0 0 18px rgba(251,191,36,0.12)' }
+                                                : undefined
+                                        }
+                                        className={`group relative w-full text-left rounded-xl p-4 transition-all ${
+                                            activeServiceId === service.id
+                                                ? 'bg-stone-900/78'
+                                                : 'bg-stone-900/52 hover:bg-stone-900/66'
+                                        }`}
                                     >
+                                        <span
+                                            className={`pointer-events-none absolute inset-0 rounded-xl transition-opacity ${
+                                                activeServiceId === service.id
+                                                    ? 'opacity-100 bg-gradient-to-r from-amber-300/8 via-transparent to-amber-300/8'
+                                                    : 'opacity-0 group-hover:opacity-100 bg-gradient-to-r from-amber-300/6 via-transparent to-amber-300/6'
+                                            }`}
+                                        />
                                         <div className="flex items-start justify-between gap-3">
                                             <div>
                                                 <p className="text-white text-sm md:text-[15px] font-semibold">{service.name}</p>
                                                 <p className="text-stone-400 text-[11px] uppercase tracking-[0.14em] mt-1">{service.duration}</p>
                                             </div>
-                                            <p className="text-amber-300 text-[15px] font-semibold">{service.price}</p>
+                                            <motion.p
+                                                className={`relative text-[15px] font-semibold transition-all ${
+                                                    activeServiceId === service.id
+                                                        ? 'text-amber-200'
+                                                        : 'text-amber-300 group-hover:text-amber-200 group-hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.35)]'
+                                                }`}
+                                                animate={
+                                                    activeServiceId === service.id
+                                                        ? {
+                                                            filter: [
+                                                                'brightness(0.82)',
+                                                                'brightness(1.2)',
+                                                                'brightness(0.82)',
+                                                            ],
+                                                            opacity: [0.86, 1, 0.86],
+                                                            textShadow: [
+                                                                '0 0 5px rgba(251,191,36,0.18)',
+                                                                '0 0 14px rgba(251,191,36,0.42)',
+                                                                '0 0 5px rgba(251,191,36,0.18)',
+                                                            ],
+                                                        }
+                                                        : { filter: 'brightness(1)', opacity: 1, textShadow: '0 0 0 rgba(0,0,0,0)' }
+                                                }
+                                                transition={
+                                                    activeServiceId === service.id
+                                                        ? { duration: 2.2, ease: 'easeInOut', repeat: Infinity }
+                                                        : { duration: 0.2 }
+                                                }
+                                            >
+                                                {service.price}
+                                            </motion.p>
                                         </div>
-                                    </motion.div>
+                                    </motion.button>
                                 ))}
                             </div>
 
@@ -357,7 +406,7 @@ const Aura = () => {
                                     setShowServices(false);
                                     openBooking();
                                 }}
-                                className="mt-6 w-full bg-white text-stone-900 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-amber-200 transition-colors"
+                                className="relative z-10 mt-6 w-full bg-white text-stone-900 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-amber-200 transition-colors"
                             >
                                 Book a Service
                             </button>
