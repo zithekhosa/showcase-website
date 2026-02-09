@@ -117,17 +117,30 @@ const Aura = () => {
 
         const direction = wheelDeltaRef.current > 0 ? 1 : -1;
         wheelDeltaRef.current = 0;
-        const moved = requestSlide(direction);
-        if (moved) event.preventDefault();
+        return requestSlide(direction);
     }, [requestSlide]);
 
     useEffect(() => {
-        const clearWheelAccumulator = () => {
-            wheelDeltaRef.current = 0;
+        const container = carouselRef.current;
+        if (!container) return undefined;
+
+        const onWheel = (event) => {
+            const direction = event.deltaY > 0 ? 1 : -1;
+            const isAtFirst = activeIndex === 0 && direction < 0;
+            const isAtLast = activeIndex === SECTIONS.length - 1 && direction > 0;
+
+            if (isAtFirst || isAtLast) {
+                wheelDeltaRef.current = 0;
+                return;
+            }
+
+            event.preventDefault();
+            handleWheel(event);
         };
-        window.addEventListener('scroll', clearWheelAccumulator, { passive: true });
-        return () => window.removeEventListener('scroll', clearWheelAccumulator);
-    }, []);
+
+        container.addEventListener('wheel', onWheel, { passive: false });
+        return () => container.removeEventListener('wheel', onWheel);
+    }, [activeIndex, handleWheel]);
 
     const progress = (activeIndex + 1) / SECTIONS.length;
 
@@ -151,7 +164,6 @@ const Aura = () => {
 
             <div
                 ref={carouselRef}
-                onWheel={handleWheel}
                 onTouchStart={(event) => { touchStartY.current = event.touches[0].clientY; }}
                 onTouchEnd={(event) => {
                     const delta = touchStartY.current - event.changedTouches[0].clientY;
@@ -184,16 +196,20 @@ const Aura = () => {
 
             <div className="fixed bottom-0 left-0 h-1 bg-amber-500 z-50 origin-left transition-all duration-300" style={{ width: `${progress * 100}%` }} />
 
-            <div className="h-screen flex items-center justify-center bg-stone-900 border-t border-stone-800 relative z-10">
-                <div className="text-center">
-                    <h2 className="text-6xl font-display mb-8">Begin Your Ritual</h2>
-                    <p className="text-stone-500 mb-12 max-w-md mx-auto">Gaborone, Botswana - +267 71 000 000</p>
-                    <button className="bg-white text-stone-900 px-12 py-4 uppercase tracking-widest text-sm font-bold hover:bg-amber-500 transition-colors">
+            <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: activeIndex === SECTIONS.length - 1 ? 1 : 0, y: activeIndex === SECTIONS.length - 1 ? 0 : 16 }}
+                transition={{ duration: 0.3 }}
+                className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+            >
+                <div className="pointer-events-auto bg-stone-900/90 border border-stone-700 backdrop-blur-lg rounded-2xl px-5 py-4 md:px-6 md:py-5 text-center shadow-2xl">
+                    <p className="text-xs uppercase tracking-[0.2em] text-amber-400 mb-2">Begin Your Ritual</p>
+                    <p className="text-stone-300 text-sm mb-3">Gaborone, Botswana - +267 71 000 000</p>
+                    <button className="bg-white text-stone-900 px-6 py-2.5 uppercase tracking-widest text-xs font-bold hover:bg-amber-500 transition-colors rounded-full">
                         Book Appointment
                     </button>
-                    <p className="mt-24 text-stone-600 text-xs uppercase tracking-widest">© 2026 Aura Wellness.</p>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 };
