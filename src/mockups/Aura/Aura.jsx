@@ -91,6 +91,8 @@ const Aura = () => {
     const touchStartY = useRef(0);
     const wheelDeltaRef = useRef(0);
     const lockRef = useRef(false);
+    const lastSlideAtRef = useRef(0);
+    const wheelResetTimerRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
 
     const scrollToIndex = useCallback((nextIndex) => {
@@ -112,12 +114,20 @@ const Aura = () => {
     }, [activeIndex, scrollToIndex]);
 
     const handleWheel = useCallback((event) => {
+        const now = Date.now();
+        const SLIDE_COOLDOWN_MS = 700;
+        if (now - lastSlideAtRef.current < SLIDE_COOLDOWN_MS) return;
+
         wheelDeltaRef.current += event.deltaY;
-        if (Math.abs(wheelDeltaRef.current) < 70) return;
+        if (Math.abs(wheelDeltaRef.current) < 100) return;
 
         const direction = wheelDeltaRef.current > 0 ? 1 : -1;
         wheelDeltaRef.current = 0;
-        return requestSlide(direction);
+        const moved = requestSlide(direction);
+        if (moved) {
+            lastSlideAtRef.current = now;
+        }
+        return moved;
     }, [requestSlide]);
 
     useEffect(() => {
@@ -136,10 +146,22 @@ const Aura = () => {
 
             event.preventDefault();
             handleWheel(event);
+
+            if (wheelResetTimerRef.current) {
+                window.clearTimeout(wheelResetTimerRef.current);
+            }
+            wheelResetTimerRef.current = window.setTimeout(() => {
+                wheelDeltaRef.current = 0;
+            }, 120);
         };
 
         container.addEventListener('wheel', onWheel, { passive: false });
-        return () => container.removeEventListener('wheel', onWheel);
+        return () => {
+            container.removeEventListener('wheel', onWheel);
+            if (wheelResetTimerRef.current) {
+                window.clearTimeout(wheelResetTimerRef.current);
+            }
+        };
     }, [activeIndex, handleWheel]);
 
     const progress = (activeIndex + 1) / SECTIONS.length;
