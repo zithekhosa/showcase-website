@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const SECTIONS = [
     {
@@ -33,7 +33,15 @@ const SECTIONS = [
     },
 ];
 
-const HorizontalSection = ({ section, index }) => (
+const SERVICES = [
+    { id: 'glow', name: 'Aura Glow Facial', duration: '60 min', price: 'P850' },
+    { id: 'clarity', name: 'Pigment Clarity Peel', duration: '45 min', price: 'P780' },
+    { id: 'sculpt', name: 'Body Sculpt Ritual', duration: '90 min', price: 'P1200' },
+    { id: 'restore', name: 'Deep Restore Massage', duration: '75 min', price: 'P950' },
+    { id: 'science', name: 'Melanin Science Consultation', duration: '30 min', price: 'P400' },
+];
+
+const HorizontalSection = ({ section, index, onOpenServices, onBook }) => (
     <section className="w-screen h-screen flex-shrink-0 relative overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 z-0">
             <img
@@ -72,15 +80,27 @@ const HorizontalSection = ({ section, index }) => (
                     {section.text}
                 </motion.p>
 
-                <motion.button
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.45, delay: 0.15 }}
-                    className="mt-12 group flex items-center gap-4 text-white uppercase tracking-widest text-xs hover:text-amber-500 transition-colors"
-                >
-                    Explore {section.subtitle}
-                    <span className="w-12 h-[1px] bg-white group-hover:w-24 group-hover:bg-amber-500 transition-all"></span>
-                </motion.button>
+                <div className="mt-12 flex flex-wrap items-center gap-4">
+                    <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.45, delay: 0.15 }}
+                        onClick={onOpenServices}
+                        className="group flex items-center gap-4 text-white uppercase tracking-widest text-xs hover:text-amber-500 transition-colors"
+                    >
+                        View Services & Prices
+                        <span className="w-12 h-[1px] bg-white group-hover:w-24 group-hover:bg-amber-500 transition-all"></span>
+                    </motion.button>
+                    <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.45, delay: 0.2 }}
+                        onClick={onBook}
+                        className="bg-white text-stone-900 px-5 py-2.5 rounded-full uppercase tracking-widest text-xs font-bold hover:bg-amber-500 transition-colors"
+                    >
+                        Book Appointment
+                    </motion.button>
+                </div>
             </div>
         </div>
     </section>
@@ -94,6 +114,10 @@ const Aura = () => {
     const lastSlideAtRef = useRef(0);
     const wheelResetTimerRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [showServices, setShowServices] = useState(false);
+    const [showBooking, setShowBooking] = useState(false);
+    const [bookingSent, setBookingSent] = useState(false);
+    const [selectedService, setSelectedService] = useState(SERVICES[0].id);
 
     const scrollToIndex = useCallback((nextIndex) => {
         const safeIndex = Math.max(0, Math.min(nextIndex, SECTIONS.length - 1));
@@ -166,6 +190,16 @@ const Aura = () => {
 
     const progress = (activeIndex + 1) / SECTIONS.length;
 
+    const openBooking = () => {
+        setBookingSent(false);
+        setShowBooking(true);
+    };
+
+    const submitBooking = (event) => {
+        event.preventDefault();
+        setBookingSent(true);
+    };
+
     return (
         <div className="bg-stone-950 font-sans text-stone-100 selection:bg-amber-500 selection:text-black">
             <style>{`
@@ -200,7 +234,13 @@ const Aura = () => {
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                 >
                     {SECTIONS.map((section, index) => (
-                        <HorizontalSection key={section.id} section={section} index={index} />
+                        <HorizontalSection
+                            key={section.id}
+                            section={section}
+                            index={index}
+                            onOpenServices={() => setShowServices(true)}
+                            onBook={openBooking}
+                        />
                     ))}
                 </motion.div>
             </div>
@@ -227,11 +267,147 @@ const Aura = () => {
                 <div className="pointer-events-auto bg-stone-900/90 border border-stone-700 backdrop-blur-lg rounded-2xl px-5 py-4 md:px-6 md:py-5 text-center shadow-2xl">
                     <p className="text-xs uppercase tracking-[0.2em] text-amber-400 mb-2">Begin Your Ritual</p>
                     <p className="text-stone-300 text-sm mb-3">Gaborone, Botswana - +267 71 000 000</p>
-                    <button className="bg-white text-stone-900 px-6 py-2.5 uppercase tracking-widest text-xs font-bold hover:bg-amber-500 transition-colors rounded-full">
+                    <button
+                        onClick={openBooking}
+                        className="bg-white text-stone-900 px-6 py-2.5 uppercase tracking-widest text-xs font-bold hover:bg-amber-500 transition-colors rounded-full"
+                    >
                         Book Appointment
                     </button>
                 </div>
             </motion.div>
+
+            <AnimatePresence>
+                {showServices && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[70] bg-black/55 backdrop-blur-sm"
+                        onClick={() => setShowServices(false)}
+                    >
+                        <motion.aside
+                            initial={{ x: 420 }}
+                            animate={{ x: 0 }}
+                            exit={{ x: 420 }}
+                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                            onClick={(event) => event.stopPropagation()}
+                            className="absolute right-0 top-0 h-full w-full max-w-md bg-stone-950 border-l border-stone-800 p-6 md:p-8 overflow-y-auto"
+                        >
+                            <div className="flex items-center justify-between mb-6">
+                                <h3 className="text-2xl font-display text-white">Services & Prices</h3>
+                                <button
+                                    onClick={() => setShowServices(false)}
+                                    className="text-stone-400 hover:text-white"
+                                    aria-label="Close services"
+                                >
+                                    <span className="material-symbols-outlined">close</span>
+                                </button>
+                            </div>
+
+                            <div className="space-y-3">
+                                {SERVICES.map((service) => (
+                                    <div key={service.id} className="rounded-xl border border-stone-800 bg-stone-900/80 p-4">
+                                        <div className="flex items-start justify-between gap-3">
+                                            <div>
+                                                <p className="text-white text-sm font-semibold">{service.name}</p>
+                                                <p className="text-stone-400 text-xs uppercase tracking-wider mt-1">{service.duration}</p>
+                                            </div>
+                                            <p className="text-amber-400 text-sm font-bold">{service.price}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    setShowServices(false);
+                                    openBooking();
+                                }}
+                                className="mt-6 w-full bg-white text-stone-900 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-amber-500 transition-colors"
+                            >
+                                Book a Service
+                            </button>
+                        </motion.aside>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+                {showBooking && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[80] bg-black/65 backdrop-blur-sm px-4 flex items-center justify-center"
+                        onClick={() => setShowBooking(false)}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+                            transition={{ duration: 0.3 }}
+                            onClick={(event) => event.stopPropagation()}
+                            className="w-full max-w-xl rounded-2xl border border-stone-700 bg-stone-950 p-6 md:p-8"
+                        >
+                            <div className="flex items-center justify-between mb-6">
+                                <h3 className="text-2xl font-display text-white">Book Appointment</h3>
+                                <button
+                                    onClick={() => setShowBooking(false)}
+                                    className="text-stone-400 hover:text-white"
+                                    aria-label="Close booking"
+                                >
+                                    <span className="material-symbols-outlined">close</span>
+                                </button>
+                            </div>
+
+                            {bookingSent ? (
+                                <div className="text-center py-10">
+                                    <p className="text-amber-400 uppercase tracking-[0.2em] text-xs mb-3">Request Sent</p>
+                                    <p className="text-stone-200">Your appointment request was received. We will contact you shortly.</p>
+                                </div>
+                            ) : (
+                                <form onSubmit={submitBooking} className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs uppercase tracking-widest text-stone-400 mb-2">Name</label>
+                                            <input required type="text" className="w-full bg-stone-900 border border-stone-700 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs uppercase tracking-widest text-stone-400 mb-2">Phone</label>
+                                            <input required type="tel" className="w-full bg-stone-900 border border-stone-700 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500" />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs uppercase tracking-widest text-stone-400 mb-2">Service</label>
+                                            <select
+                                                value={selectedService}
+                                                onChange={(event) => setSelectedService(event.target.value)}
+                                                className="w-full bg-stone-900 border border-stone-700 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500"
+                                            >
+                                                {SERVICES.map((service) => (
+                                                    <option key={service.id} value={service.id}>{service.name} - {service.price}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs uppercase tracking-widest text-stone-400 mb-2">Date</label>
+                                            <input required type="date" className="w-full bg-stone-900 border border-stone-700 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs uppercase tracking-widest text-stone-400 mb-2">Notes</label>
+                                        <textarea rows="3" className="w-full bg-stone-900 border border-stone-700 rounded-lg p-3 text-sm focus:outline-none focus:border-amber-500 resize-none" placeholder="Preferred time, skin concerns, or special requests." />
+                                    </div>
+                                    <button className="w-full bg-white text-stone-900 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-amber-500 transition-colors">
+                                        Confirm Booking Request
+                                    </button>
+                                </form>
+                            )}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
