@@ -41,6 +41,12 @@ const SERVICES = [
     { id: 'science', name: 'Melanin Science Consultation', duration: '30 min', price: 'P400' },
 ];
 
+const MOTION = {
+    ease: [0.22, 1, 0.36, 1],
+    fast: 0.22,
+    base: 0.3,
+};
+
 const HorizontalSection = ({ section, index, onOpenServices, onBook }) => (
     <section className="w-screen h-screen flex-shrink-0 relative overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 z-0">
@@ -259,12 +265,12 @@ const Aura = () => {
             <div className="fixed bottom-0 left-0 h-1 bg-amber-500 z-50 origin-left transition-all duration-300" style={{ width: `${progress * 100}%` }} />
 
             <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: activeIndex === SECTIONS.length - 1 ? 1 : 0, y: activeIndex === SECTIONS.length - 1 ? 0 : 16 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: activeIndex === SECTIONS.length - 1 ? 1 : 0, y: activeIndex === SECTIONS.length - 1 ? 0 : 12 }}
+                transition={{ duration: MOTION.fast, ease: MOTION.ease }}
                 className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
             >
-                <div className="pointer-events-auto bg-stone-900/90 border border-stone-700 backdrop-blur-lg rounded-2xl px-5 py-4 md:px-6 md:py-5 text-center shadow-2xl">
+                <div className="pointer-events-auto bg-stone-950/70 border border-white/10 backdrop-blur-xl rounded-2xl px-5 py-4 md:px-6 md:py-5 text-center shadow-[0_20px_50px_rgba(0,0,0,0.45)]">
                     <p className="text-xs uppercase tracking-[0.2em] text-amber-400 mb-2">Begin Your Ritual</p>
                     <p className="text-stone-300 text-sm mb-3">Gaborone, Botswana - +267 71 000 000</p>
                     <button
@@ -282,19 +288,21 @@ const Aura = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[70] bg-black/55 backdrop-blur-sm"
+                        transition={{ duration: MOTION.fast }}
+                        className="fixed inset-0 z-[70] bg-black/45 backdrop-blur-[2px]"
                         onClick={() => setShowServices(false)}
                     >
                         <motion.aside
-                            initial={{ x: 420 }}
+                            initial={{ x: 380, opacity: 0 }}
                             animate={{ x: 0 }}
-                            exit={{ x: 420 }}
-                            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                            exit={{ x: 380, opacity: 0 }}
+                            transition={{ duration: MOTION.base, ease: MOTION.ease }}
                             onClick={(event) => event.stopPropagation()}
-                            className="absolute right-0 top-0 h-full w-full max-w-md bg-stone-950 border-l border-stone-800 p-6 md:p-8 overflow-y-auto"
+                            className="absolute right-0 top-0 h-full w-full max-w-md bg-stone-950/74 border-l border-white/10 backdrop-blur-2xl p-6 md:p-8 overflow-y-auto shadow-[-30px_0_80px_rgba(0,0,0,0.45)]"
                         >
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.08] via-transparent to-transparent" />
                             <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-2xl font-display text-white">Services & Prices</h3>
+                                <h3 className="text-3xl font-display text-white leading-none">Services & Prices</h3>
                                 <button
                                     onClick={() => setShowServices(false)}
                                     className="text-stone-400 hover:text-white"
@@ -304,17 +312,28 @@ const Aura = () => {
                                 </button>
                             </div>
 
-                            <div className="space-y-3">
-                                {SERVICES.map((service) => (
-                                    <div key={service.id} className="rounded-xl border border-stone-800 bg-stone-900/80 p-4">
+                            <p className="text-stone-300/85 text-sm leading-relaxed mb-6">
+                                Tailored rituals for melanated skin. Calm results, measured care, and premium protocols.
+                            </p>
+
+                            <div className="space-y-2.5 relative">
+                                {SERVICES.map((service, index) => (
+                                    <motion.div
+                                        key={service.id}
+                                        initial={{ opacity: 0, y: 8 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: MOTION.fast, delay: index * 0.035, ease: MOTION.ease }}
+                                        whileHover={{ y: -2 }}
+                                        className="rounded-xl border border-white/10 bg-stone-900/55 p-4 transition-colors hover:border-amber-300/40"
+                                    >
                                         <div className="flex items-start justify-between gap-3">
                                             <div>
-                                                <p className="text-white text-sm font-semibold">{service.name}</p>
-                                                <p className="text-stone-400 text-xs uppercase tracking-wider mt-1">{service.duration}</p>
+                                                <p className="text-white text-sm md:text-[15px] font-semibold">{service.name}</p>
+                                                <p className="text-stone-400 text-[11px] uppercase tracking-[0.14em] mt-1">{service.duration}</p>
                                             </div>
-                                            <p className="text-amber-400 text-sm font-bold">{service.price}</p>
+                                            <p className="text-amber-300 text-[15px] font-semibold">{service.price}</p>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
 
@@ -323,7 +342,7 @@ const Aura = () => {
                                     setShowServices(false);
                                     openBooking();
                                 }}
-                                className="mt-6 w-full bg-white text-stone-900 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-amber-500 transition-colors"
+                                className="mt-6 w-full bg-white text-stone-900 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-amber-200 transition-colors"
                             >
                                 Book a Service
                             </button>
@@ -338,16 +357,17 @@ const Aura = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[80] bg-black/65 backdrop-blur-sm px-4 flex items-center justify-center"
+                        transition={{ duration: MOTION.fast }}
+                        className="fixed inset-0 z-[80] bg-black/55 backdrop-blur-[2px] px-4 flex items-center justify-center"
                         onClick={() => setShowBooking(false)}
                     >
                         <motion.div
-                            initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                            initial={{ opacity: 0, y: 14, scale: 0.99 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 12, scale: 0.98 }}
-                            transition={{ duration: 0.3 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.99 }}
+                            transition={{ duration: MOTION.base, ease: MOTION.ease }}
                             onClick={(event) => event.stopPropagation()}
-                            className="w-full max-w-xl rounded-2xl border border-stone-700 bg-stone-950 p-6 md:p-8"
+                            className="w-full max-w-xl rounded-2xl border border-white/10 bg-stone-950/78 backdrop-blur-2xl p-6 md:p-8 shadow-[0_30px_70px_rgba(0,0,0,0.5)]"
                         >
                             <div className="flex items-center justify-between mb-6">
                                 <h3 className="text-2xl font-display text-white">Book Appointment</h3>
