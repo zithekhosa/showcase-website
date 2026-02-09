@@ -88,41 +88,46 @@ const HorizontalSection = ({ section, index }) => (
 
 const Aura = () => {
     const carouselRef = useRef(null);
-    const touchStartX = useRef(0);
+    const touchStartY = useRef(0);
+    const wheelDeltaRef = useRef(0);
+    const lockRef = useRef(false);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [isAnimating, setIsAnimating] = useState(false);
 
     const scrollToIndex = useCallback((nextIndex) => {
-        const container = carouselRef.current;
-        if (!container) return;
         const safeIndex = Math.max(0, Math.min(nextIndex, SECTIONS.length - 1));
-        container.scrollTo({ left: container.clientWidth * safeIndex, behavior: 'smooth' });
         setActiveIndex(safeIndex);
     }, []);
 
     const requestSlide = useCallback((direction) => {
-        if (isAnimating) return false;
+        if (lockRef.current) return false;
         const nextIndex = Math.max(0, Math.min(activeIndex + direction, SECTIONS.length - 1));
         if (nextIndex === activeIndex) return false;
 
-        setIsAnimating(true);
         scrollToIndex(nextIndex);
-        window.setTimeout(() => setIsAnimating(false), 520);
+        lockRef.current = true;
+        window.setTimeout(() => {
+            lockRef.current = false;
+        }, 560);
         return true;
-    }, [activeIndex, isAnimating, scrollToIndex]);
+    }, [activeIndex, scrollToIndex]);
 
     const handleWheel = useCallback((event) => {
-        if (Math.abs(event.deltaY) < 12) return;
-        const direction = event.deltaY > 0 ? 1 : -1;
+        wheelDeltaRef.current += event.deltaY;
+        if (Math.abs(wheelDeltaRef.current) < 70) return;
+
+        const direction = wheelDeltaRef.current > 0 ? 1 : -1;
+        wheelDeltaRef.current = 0;
         const moved = requestSlide(direction);
         if (moved) event.preventDefault();
     }, [requestSlide]);
 
     useEffect(() => {
-        const onResize = () => scrollToIndex(activeIndex);
-        window.addEventListener('resize', onResize);
-        return () => window.removeEventListener('resize', onResize);
-    }, [activeIndex, scrollToIndex]);
+        const clearWheelAccumulator = () => {
+            wheelDeltaRef.current = 0;
+        };
+        window.addEventListener('scroll', clearWheelAccumulator, { passive: true });
+        return () => window.removeEventListener('scroll', clearWheelAccumulator);
+    }, []);
 
     const progress = (activeIndex + 1) / SECTIONS.length;
 
@@ -147,19 +152,23 @@ const Aura = () => {
             <div
                 ref={carouselRef}
                 onWheel={handleWheel}
-                onTouchStart={(event) => { touchStartX.current = event.touches[0].clientX; }}
+                onTouchStart={(event) => { touchStartY.current = event.touches[0].clientY; }}
                 onTouchEnd={(event) => {
-                    const delta = touchStartX.current - event.changedTouches[0].clientX;
+                    const delta = touchStartY.current - event.changedTouches[0].clientY;
                     if (Math.abs(delta) < 40) return;
                     requestSlide(delta > 0 ? 1 : -1);
                 }}
                 className="h-screen overflow-hidden"
             >
-                <div className="flex h-full">
+                <motion.div
+                    className="flex h-full"
+                    animate={{ x: `-${activeIndex * 100}vw` }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                >
                     {SECTIONS.map((section, index) => (
                         <HorizontalSection key={section.id} section={section} index={index} />
                     ))}
-                </div>
+                </motion.div>
             </div>
 
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3">
