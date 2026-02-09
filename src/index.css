@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased text-stone-900 bg-stone-50;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-display {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .font-sans {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-shadow-glow {
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+  }
+}
