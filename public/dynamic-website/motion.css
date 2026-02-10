@@ -1,0 +1,83 @@
+/* Ghost Layer: Purely Visual */
+#motion-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    /* MOVED UP: Was -1, now 0 to sit above body BG but below content */
+    pointer-events: none;
+    /* NO CLICKS */
+    overflow: hidden;
+}
+
+/* The Subtle Watermarks */
+.watermark-diamond {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border: 2px solid rgba(212, 175, 55, 0.15);
+    /* INCREASED OPACITY & BORDER WIDTH */
+    transform: rotate(45deg);
+    opacity: 0;
+    animation: drift 20s ease-in-out infinite alternate;
+}
+
+.wd-1 {
+    top: -100px;
+    right: -200px;
+    animation-delay: 0s;
+}
+
+.wd-2 {
+    bottom: -150px;
+    left: -150px;
+    width: 800px;
+    height: 800px;
+    border-color: rgba(15, 23, 42, 0.1);
+    /* INCREASED OPACITY */
+    animation-duration: 25s;
+    animation-delay: -10s;
+}
+
+.wd-3 {
+    top: 40%;
+    left: 20%;
+    width: 300px;
+    height: 300px;
+    border: 30px solid rgba(248, 250, 252, 0.8);
+    mix-blend-mode: normal;
+    /* Removed overlay/blend to ensure visibility */
+    animation: float 15s ease-in-out infinite;
+}
+
+/* Keyframes: Slow & Smooth */
+@keyframes drift {
+    0% {
+        opacity: 0.05;
+        transform: rotate(45deg) translate(0, 0);
+    }
+
+    50% {
+        opacity: 0.12;
+        /* Peak visibility increased from 0.06 to 0.12 */
+    }
+
+    100% {
+        opacity: 0.05;
+        transform: rotate(50deg) translate(30px, 30px);
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: rotate(45deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(45deg) translateY(-40px);
+    }
+}

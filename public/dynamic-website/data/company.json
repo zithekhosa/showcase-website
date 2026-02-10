@@ -1,0 +1,77 @@
+{
+  "name": "Dynamic Insurance Brokers",
+  "tagline": "Independent insurance and risk solutions provider in Botswana",
+  "experience_years": "25+",
+  "vision": "To be the service provider of choice in insurance brokerage.",
+  "mission": [
+    "Build long-term relationships with existing and potential clients.",
+    "Secure the most appropriate and competitive insurance terms.",
+    "Maintain a strong customer-focused service culture."
+  ],
+  "values": [
+    "Product and service innovation",
+    "Integrity",
+    "Partnership",
+    "Shareholder value"
+  ],
+  "contact": {
+    "head_office": {
+      "address": "Unit 2AB, 2nd Floor, Plot 54368, North Tower, iTower CBD, Gaborone, Botswana",
+      "tel": "(+267) 390 6490",
+      "fax": "(+267) 395 7594",
+      "email": "dib@dib.co.bw"
+    },
+    "palapye_branch": {
+      "address": "Plot 20737, Office 11, Diphalane Mall, Palapye",
+      "tel": "(+267) 492 3181 / 3146",
+      "fax": "(+267) 492 3182",
+      "email": "dibpalapye@dib.co.bw"
+    },
+    "maun_branch": {
+      "address": "Plot 208, Maun Mall, Maun",
+      "tel": "(+267) 686 2514 / 2520",
+      "fax": "(+267) 686 2527",
+      "email": "dibmaun@dib.co.bw"
+    },
+    "lusaka_office": {
+      "address": "Superannuation House, 2nd Floor, Western Wing, Ben Bella Road, Lusaka",
+      "tel": "(+260) 211 23874 / 3",
+      "cell": "+260 97 891 9704",
+      "email": "dibzambia@dib.co.bw"
+    }
+  },
+  "services": [
+    "Short-term insurance broking",
+    "Life insurance solutions",
+    "Group schemes and group life cover",
+    "Funeral cover",
+    "Insurance portfolio placement and renewal",
+    "Risk management advisory",
+    "Claims handling and management",
+    "Insurance awareness and training workshops",
+    "Assessment of risk exposure",
+    "Engineering and fire risk surveys",
+    "Property risk control and business interruption claims support"
+  ],
+  "partners": [
+    "Botswana Insurance Company",
+    "Old Mutual",
+    "Hollard",
+    "Liberty Life",
+    "Bryte Insurance",
+    "Metropolitan Life",
+    "Sunshine Insurance"
+  ],
+  "industries_served": [
+    "Agriculture",
+    "Construction",
+    "Manufacturing",
+    "Mining",
+    "Retail and consumer goods",
+    "Banks and financial institutions",
+    "Government and NGOs",
+    "Technology and media",
+    "Tourism and hospitality",
+    "Education and religious institutions"
+  ]
+}

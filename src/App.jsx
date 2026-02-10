@@ -6,6 +6,7 @@ import GearHead from './mockups/GearHead/GearHead';
 import Guardian from './mockups/Guardian/Guardian';
 import Savor from './mockups/Savor/Savor';
 import Velvet from './mockups/Velvet/Velvet';
+import DynamicInsurance from './mockups/DynamicInsurance/DynamicInsurance';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/guardian" element={<Guardian />} />
         <Route path="/savor" element={<Savor />} />
         <Route path="/velvet" element={<Velvet />} />
+        <Route path="/dynamic-insurance" element={<DynamicInsurance />} />
       </Routes>
     </Router>
   );

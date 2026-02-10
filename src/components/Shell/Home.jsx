@@ -69,6 +69,13 @@ const Home = () => {
             description: "Trust-building corporate layout with prominent lead generation forms and professional service verification."
         },
         {
+            to: "/dynamic-insurance",
+            title: "Dynamic",
+            category: "Insurance & Financial",
+            gradient: "bg-gradient-to-br from-cyan-600 via-blue-700 to-slate-900",
+            description: "Insurance-focused digital experience with quote flows, claims pages, trust signals, and a client portal interface."
+        },
+        {
             to: "/savor",
             title: "Savor",
             category: "Hospitality & Dining",

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request a Quote | Dynamic Insurance Brokers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar" aria-label="Primary">
+        <div class="container nav-container">
+            <a class="logo" href="index.html">
+                <div class="logo-icon">
+                    <div class="diamond d-1"></div>
+                    <div class="diamond d-2"></div>
+                </div>
+                <div class="logo-text">
+                    <h1>DYNAMIC</h1>
+                    <span>INSURANCE BROKERS</span>
+                </div>
+            </a>
+            <ul class="nav-links" id="primary-nav">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="claims.html">Claims</a></li>
+                <li><a href="portal.html">Client Portal</a></li>
+                <li><a href="quote.html" class="btn-gold active">Get a Quote</a></li>
+            </ul>
+            <button class="burger" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-nav">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </button>
+        </div>
+    </nav>
+
+    <main class="subpage-main">
+        <section class="subpage-hero">
+            <div class="container">
+                <p class="kicker">Quote Request</p>
+                <h1>Structured Insurance Intake</h1>
+                <p>Share your requirements so Dynamic Insurance Brokers can secure suitable and competitive insurance terms.</p>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="container">
+                <div class="app-card">
+                    <div class="stepper" aria-label="Quote flow steps">
+                        <span class="step-pill is-active" data-step-pill="1">1. Contact</span>
+                        <span class="step-pill" data-step-pill="2">2. Coverage</span>
+                        <span class="step-pill" data-step-pill="3">3. Review</span>
+                    </div>
+
+                    <form id="quote-wizard" class="wizard-form">
+                        <section class="wizard-step is-active" data-step="1">
+                            <div class="field-grid">
+                                <label class="field">
+                                    Full Name
+                                    <input type="text" placeholder="Client Full Name" required>
+                                </label>
+                                <label class="field">
+                                    Email
+                                    <input type="email" placeholder="name@company.com" required>
+                                </label>
+                                <label class="field">
+                                    Phone
+                                    <input type="tel" placeholder="+267 0000 0000" required>
+                                </label>
+                                <label class="field">
+                                    Preferred Contact
+                                    <select>
+                                        <option>Email</option>
+                                        <option>Phone</option>
+                                        <option>WhatsApp</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </section>
+
+                        <section class="wizard-step" data-step="2">
+                            <div class="field-grid">
+                                <label class="field">
+                                    Insurance Type
+                                    <select id="insurance-type">
+                                        <option value="business">Business</option>
+                                        <option value="personal">Personal</option>
+                                    </select>
+                                </label>
+                                <label class="field business-only">
+                                    Business Name
+                                    <input type="text" placeholder="Dynamic Logistics Ltd">
+                                </label>
+                                <label class="field business-only">
+                                    Number of Employees
+                                    <input type="number" min="1" placeholder="25">
+                                </label>
+                                <label class="field personal-only is-hidden">
+                                    Vehicle Count
+                                    <input type="number" min="0" placeholder="2">
+                                </label>
+                                <label class="field personal-only is-hidden">
+                                    Property Type
+                                    <select>
+                                        <option>Apartment</option>
+                                        <option>House</option>
+                                        <option>Townhouse</option>
+                                    </select>
+                                </label>
+                                <label class="field field-wide">
+                                    Notes
+                                    <textarea rows="4" placeholder="Any coverage priorities?"></textarea>
+                                </label>
+                            </div>
+                        </section>
+
+                        <section class="wizard-step" data-step="3">
+                            <div class="review-card">
+                                <h3>Review Request</h3>
+                                <p>Your request follows our service process: Discover, Develop, Deliver, and Review.</p>
+                                <ul class="features-list">
+                                    <li><i class="fas fa-check-circle"></i> Understand client objectives and requirements</li>
+                                    <li><i class="fas fa-check-circle"></i> Design suitable insurance and risk strategies</li>
+                                    <li><i class="fas fa-check-circle"></i> Implement and review results continuously</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <div class="wizard-actions">
+                            <button class="btn-secondary wizard-prev" type="button">Back</button>
+                            <button class="btn-primary wizard-next" type="button">Next</button>
+                            <button class="btn-gold wizard-submit" type="submit">Submit Request</button>
+                        </div>
+                    </form>
+
+                    <div id="quote-success" class="success-state is-hidden">
+                        <i class="fas fa-circle-check"></i>
+                        <h3>Quote request submitted</h3>
+                        <p>Thank you. A Dynamic Insurance Brokers consultant will contact you using your preferred contact method.</p>
+                        <a href="index.html" class="btn-primary">Return Home</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>DYNAMIC</h3>
+                <p>Independent, authorized insurance brokerage and risk solutions provider in Botswana.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="quote.html">Request Quote</a></li>
+                    <li><a href="portal.html">Client Portal</a></li>
+                    <li><a href="admin.html">Broker Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Head Office - Gaborone</h4>
+                <ul>
+                    <li><i class="fas fa-phone"></i> (+267) 390 6490</li>
+                    <li><i class="fas fa-fax"></i> (+267) 395 7594</li>
+                    <li><i class="fas fa-envelope"></i> dib@dib.co.bw</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Dynamic Insurance Brokers. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

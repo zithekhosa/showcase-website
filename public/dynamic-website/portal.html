@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal | Dynamic Insurance Brokers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar" aria-label="Primary">
+        <div class="container nav-container">
+            <a class="logo" href="index.html">
+                <div class="logo-icon">
+                    <div class="diamond d-1"></div>
+                    <div class="diamond d-2"></div>
+                </div>
+                <div class="logo-text">
+                    <h1>DYNAMIC</h1>
+                    <span>INSURANCE BROKERS</span>
+                </div>
+            </a>
+            <ul class="nav-links" id="primary-nav">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="quote.html">Get Quote</a></li>
+                <li><a href="claims.html">Claims</a></li>
+                <li><a href="admin.html">Broker View</a></li>
+                <li><a href="portal.html" class="btn-gold active">Client Portal</a></li>
+            </ul>
+            <button class="burger" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-nav">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </button>
+        </div>
+    </nav>
+
+    <main class="subpage-main">
+        <section class="subpage-hero">
+            <div class="container">
+                <p class="kicker">Client Services</p>
+                <h1>Client Portal</h1>
+                <p>Access policy information, documents, and claims updates in one place.</p>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="container">
+                <div class="app-card portal-login">
+                    <h2>Client Login</h2>
+                    <form class="field-grid">
+                        <label class="field">
+                            Email
+                            <input type="email" placeholder="client@email.com">
+                        </label>
+                        <label class="field">
+                            Password
+                            <input type="password" placeholder="********">
+                        </label>
+                    </form>
+                    <button type="button" class="btn-gold" id="portal-preview-btn">Open Dashboard</button>
+                </div>
+
+                <div id="portal-dashboard" class="portal-dashboard is-hidden">
+                    <div class="mini-kpis">
+                        <article class="kpi-card">
+                            <p>Active Policies</p>
+                            <h3>3</h3>
+                        </article>
+                        <article class="kpi-card">
+                            <p>Staff Strength</p>
+                            <h3>20+ Team Members</h3>
+                        </article>
+                        <article class="kpi-card">
+                            <p>Experience</p>
+                            <h3>25+ Years</h3>
+                        </article>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <section class="app-card">
+                            <h3>Service Overview</h3>
+                            <div class="table-wrap">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service Area</th>
+                                            <th>Coverage Type</th>
+                                            <th>Availability</th>
+                                            <th>Support</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Short-Term Insurance</td>
+                                            <td>Business and Personal Risk</td>
+                                            <td><span class="tag tag-ok">Active</span></td>
+                                            <td>Portfolio Placement and Renewal</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Life and Group Schemes</td>
+                                            <td>Life, Group Life, Funeral Cover</td>
+                                            <td><span class="tag tag-ok">Active</span></td>
+                                            <td>Client Advisory and Placement</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Claims and Risk Advisory</td>
+                                            <td>Claims Management and Risk Control</td>
+                                            <td><span class="tag">Continuous Review</span></td>
+                                            <td>Engineering and Fire Risk Surveys</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section class="app-card">
+                            <h3>Client Information Center</h3>
+                            <ul class="doc-list">
+                                <li><i class="fas fa-file-lines"></i> Insurance Awareness and Training Workshops</li>
+                                <li><i class="fas fa-file-lines"></i> Risk Exposure Assessment Guidance</li>
+                                <li><i class="fas fa-file-lines"></i> Claims Process and Support Information</li>
+                            </ul>
+                            <a class="btn-primary" href="claims.html">Submit New Claim</a>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>DYNAMIC</h3>
+                <p>Independent, authorized insurance brokerage and risk solutions provider in Botswana.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="quote.html">Request Quote</a></li>
+                    <li><a href="claims.html">Claims Tracker</a></li>
+                    <li><a href="admin.html">Broker Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Head Office - Gaborone</h4>
+                <ul>
+                    <li><i class="fas fa-phone"></i> (+267) 390 6490</li>
+                    <li><i class="fas fa-fax"></i> (+267) 395 7594</li>
+                    <li><i class="fas fa-envelope"></i> dib@dib.co.bw</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Dynamic Insurance Brokers. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
